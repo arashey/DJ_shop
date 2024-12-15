@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+
+{% block title %}Checkout - My Shop{% endblock %}
+
+{% block content %}
+<html dir="rtl" lang="en">
+<div class="checkout-container">
+    <div class="checkout-header">
+        <h2>تسویه حساب</h2>
+        <p>سفارش خود را بررسی کرده و جزئیات خود را تکمیل کنید تا سفارش را ثبت کنید</p>
+    </div>
+
+    <div class="checkout-body">
+        <!-- بخش خلاصه سفارش -->
+        <div class="order-summary">
+            <h3>خلاصه سفارش</h3>
+            <ul class="summary-list">
+                {% for item in cart_items %}
+                    <li class="summary-item">
+                        <div class="item-info">
+                            <span class="item-name">{{ item.product.name }}</span>
+                            <span class="item-price">${{ item.product.price }} x {{ item.quantity }}</span>
+                        </div>
+                        <div class="item-total">
+                            مجموع: {{ item.product.price|multiply:item.quantity }} $ تومان
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="order-total">
+                <span>مبلغ کل :</span>
+                <strong> {{ total_amount }} $ تومان </strong>
+            </div>
+
+        </div>
+
+        <!-- بخش اطلاعات پرداخت -->
+        <div class="billing-info">
+            <h3>اطلاعات صورتحساب</h3>
+            <form method="POST" class="checkout-form">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="form-group">
+                    {{ form.full_name.label_tag }}
+                    {{ form.full_name }}
+                </div>
+                <div class="form-group">
+                    {{ form.address.label_tag }}
+                    {{ form.address }}
+                </div>
+                <div class="form-group">
+                    {{ form.phone.label_tag }}
+                    {{ form.phone }}
+                </div>
+                <div class="form-group">
+                    {{ form.notes.label_tag }}
+                    {{ form.notes }}
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">ثبت سفارش </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                <strong>{{ message }}</strong>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+
+<style>
+    .checkout-container {
+        width: 90%;
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+
+    .checkout-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .checkout-header h2 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    .checkout-header p {
+        font-size: 1.2em;
+        color: #666;
+    }
+
+    .checkout-body {
+        display: flex;
+        gap: 20px;
+    }
+
+    .order-summary,
+    .billing-info {
+        flex: 1;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-summary {
+        max-width: 45%;
+    }
+
+    .order-summary h3,
+    .billing-info h3 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .summary-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .item-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .item-name {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .item-price {
+        font-size: 0.9em;
+        color: #555;
+    }
+
+    .item-total {
+        font-weight: bold;
+        color: #ff5722;
+    }
+
+    .order-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.5em;
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 2px solid #ddd;
+    }
+
+    .billing-info {
+        max-width: 50%;
+    }
+
+    .checkout-form .form-group {
+        margin-bottom: 15px;
+    }
+
+    .checkout-form label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    .checkout-form input,
+    .checkout-form textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1em;
+        transition: border-color 0.3s;
+    }
+
+    .checkout-form input:focus,
+    .checkout-form textarea:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    .checkout-form button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .checkout-form button:hover {
+        background-color: #0056b3;
+    }
+
+    .messages .alert {
+        margin-top: 20px;
+    }
+    .messages .alert {
+        margin-top: 20px;
+        padding: 15px;
+        font-size: 1.2em;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background-color: #28a745; /* رنگ پس زمینه سبز برای موفقیت */
+        color: white;
+        font-weight: bold;
+    }
+    
+    .messages .alert.alert-info {
+        background-color: #007bff; /* رنگ آبی برای پیام‌های اطلاعاتی */
+    }
+    
+    .messages .alert.alert-warning {
+        background-color: #ffc107; /* رنگ زرد برای پیام‌های هشدار */
+    }
+    
+    .messages .alert.alert-danger {
+        background-color: #dc3545; /* رنگ قرمز برای پیام‌های خطا */
+    }
+    
+    .messages .alert a {
+        color: white;
+        text-decoration: underline;
+    }
+</style>
+</html>    
+{% endblock %}
+
+
+
+
+
+
+
+
+

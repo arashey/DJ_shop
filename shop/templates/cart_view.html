@@ -1,0 +1,125 @@
+{% load custom_filters %}
+{% load static %}
+
+<!-- cart_view.html -->
+<html dir="rtl" lang="en">
+
+<head>
+    
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart View</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .cart-item {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .cart-item img {
+            border-radius: 8px;
+            max-height: 150px;
+            object-fit: cover;
+        }
+
+        .total-amount {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .remove-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">سبد خرید شما</h2>
+
+        <!-- نمایش سبد خرید اگر آیتمی وجود داشته باشد -->
+        {% if cart_items %}
+        <div class="cart-items">
+            {% for item in cart_items %}
+            <div class="cart-item row">
+                <!-- تصویر محصول -->
+                <div class="col-md-3">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
+                </div>
+                <!-- اطلاعات محصول -->
+                <div class="col-md-7">
+                    <h4>{{ item.product.name }}</h4>
+                    <p>قیمت : {{ item.product.price }} $ تومان</p>
+                    <p>تعداد: {{ item.quantity }}</p>
+                    <p>مجموع: {{ item.product.price|multiply:item.quantity }} $ تومان</p> <!-- اینجا باید از فیلتر مناسب استفاده کنید -->
+                </div>
+                <!-- دکمه حذف محصول -->
+                <div class="col-md-2 d-flex align-items-center justify-content-center">
+                    <a href="{% url 'remove_from_cart' item.id %}" class="btn remove-btn">حذف</a>
+                </div>
+            </div>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                    <strong>{{ message }}</strong>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- مجموع قیمت سبد خرید -->
+        <div class="total-amount">
+            <h4>مبلغ کل: {{ total_amount }} $ تومان</h4>
+        </div>
+
+        <!-- دکمه تسویه حساب -->
+        <div class="mt-4">
+            <a href="{% url 'checkout' %}" class="btn btn-custom">ادامه به تسویه حساب</a>
+        </div>
+
+        {% else %}
+        <p>سبد خرید شما خالی است. برای ادامه، محصولات را به سبد خرید خود اضافه کنید!</p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+

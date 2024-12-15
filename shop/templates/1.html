@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Online Store</title>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+<body>
+    <!-- Navbar or Header -->
+    <header>
+        <div class="logo">
+            <a href="index.html">
+                <img src="{% static 'assets/img/logo/logo.png' %}" alt="Store Logo">
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <div class="main-content">
+        <h1>Welcome to Our Online Store</h1>
+
+        <!-- Product List -->
+        <div class="product-list">
+            {% for product in products %}
+                <div class="product-item">
+                    <!-- تصویر محصول -->
+                    <img src="{% static 'images/default-product.jpg' %}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description }}</p>
+                    <p><strong>Price:</strong> ${{ product.price }}</p>
+
+                    <!-- لینک به جزئیات محصول و افزودن به سبد خرید -->
+                    <a href="{% url 'product_detail' product.id %}">View Details</a>
+                    <a href="{% url 'add_to_cart' product.id %}">Add to Cart</a>
+                </div>
+            {% empty %}
+                <p>No products available.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Online Store. All rights reserved.</p>
+    </footer>
+
+    <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+</html>
+
+
+
