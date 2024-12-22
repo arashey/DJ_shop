@@ -17,7 +17,6 @@ def product_detail(request, product_id):
     return render(request, 'product_detail.html', {'product': product})
 
 
-
 # افزودن محصول به سبد خرید
 @login_required
 def add_to_cart(request, product_id):

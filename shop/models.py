@@ -29,7 +29,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     total_amount = models.IntegerField()
     is_paid = models.BooleanField(default=False)
-    full_name = models.CharField(max_length=100, default=None)
+    full_name= models.CharField(max_length=100, default=None)
     address = models.CharField(max_length=255, default=None)
     phone = models.IntegerField()
     notes = models.TextField(blank=True, null=True)
