@@ -212,6 +212,6 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 ## Authors
 
-* **Your Name** — *Initial Work* — [your-username](https://github.com/your-username)
+* **arash** — *Initial Work* — [arash](https://github.com/arashey)
 
 >>>>>>> 4757732 (added requirements.txt and README.md)
